@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    Welcome
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+                    Footer
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="250" header="Main Menu" collapsible="false">
+                    <h:form>
+                    <p:menu>
+                        <!--<p:submenu label="Main Menu">-->
+                            <p:menuitem value="Login" url="login.xhtml" />
+                            <!--<p:menuitem value="Demo" url="http://www.primefaces.org/showcase-labs/ui/home.jsf" />-->
+                            <p:menuitem value="Regen Tables" action="#{stuffBean.populate()}" update=":form:stuff,:cart"/> 
+                            <p:menuitem value="Empty cart" action="#{cartBean.emptyCart()}" update=":form:stuff,:cart"/> 
+                        <!--</p:submenu>-->
+                          
+                    </p:menu>
+                    </h:form>    
+                </p:layoutUnit>
+                
+                <p:layoutUnit position="east" size="400" header="Your stuff" collapsible="false">
+                    <h:form id="cart">
+                    <p:dataTable id="stuff" var="stuff" value="#{cartBean.avilableStuff}">
+                        <p:column headerText="Id">
+                            <h:outputText value="#{stuff.id}"/>
+                        </p:column>
+                        <p:column headerText="Name">
+                            <h:outputText value="#{stuff.itemName}"/>
+                        </p:column>
+                        <p:column headerText="Quantity">
+                            <h:outputText value="#{stuff.quantity}"/>
+                        </p:column>
+                        <p:column style="width:4%">  
+                            <p:commandButton id="selectButton" 
+                                             
+                                             icon="ui-icon-close"
+                                             action="#{cartBean.removeStuff(stuff)}"
+                                             title="Remove from cart"
+                                             onsuccess="index"
+                                             />  
+                        </p:column>  
+                    </p:dataTable>
+                    </h:form>
+                </p:layoutUnit>
+                
+                <p:layoutUnit position="center" header="What we have on stock">
+                    
+                    <h:form id="form">
+                    <p:dataTable id="stuff" var="stuff" value="#{stuffBean.avilableStuff}">
+                        <p:column headerText="Id">
+                            <h:outputText value="#{stuff.id}"/>
+                        </p:column>
+                        <p:column headerText="Name">
+                            <h:outputText value="#{stuff.itemName}"/>
+                        </p:column>
+                        <p:column headerText="Price">
+                            <h:outputText value="#{stuff.price}"/>
+                        </p:column>
+                        <p:column headerText="Quantity">
+                            <h:outputText value="#{stuff.quantity}"/>
+                        </p:column>
+                        <p:column style="width:4%">  
+                            <p:commandButton id="selectButton" 
+                                             update=":form:stuff,:cart"
+                                             actionListener="#{cartBean.addStuff(stuff)}"
+                                             icon="ui-icon-cart" title="Buy that sucker"/>  
+                        </p:column>  
+                    </p:dataTable>
+                    </h:form>
+                
+                </p:layoutUnit>
+                
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+
